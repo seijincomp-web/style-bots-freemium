@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Style Bots | Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #050505;
+            --free-grad: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            --pro-grad: linear-gradient(135deg, #ffe259 0%, #ffa751 100%); 
+            --custom-grad: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            --gold: #ffcc00;
+            --red: #ff416c;
+            --card-bg: #0f0f13;
+            --border-rgba: rgba(255, 255, 255, 0.08);
+            --text-color: #ffffff;
+            --discord-color: #5865F2;
+        }
+
+        * { box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-body); color: var(--text-color); margin: 0; display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* TELA DE LOGIN OBRIGATÓRIO */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(15px);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px; height: 100vh; background: rgba(0,0,0,0.98); border-right: 1px solid var(--border-rgba);
+            position: fixed; display: flex; flex-direction: column; padding: 20px; z-index: 100;
+        }
+
+        /* FOTO DO USUÁRIO NO TOPO ESQUERDO */
+        .user-profile {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 30px;
+            padding: 10px; border-radius: 15px; background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-rgba);
+        }
+        .user-avatar {
+            width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary);
+            object-fit: cover; background: #222;
+        }
+        .user-name { font-size: 0.85rem; font-weight: 600; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .sidebar-logo { font-weight: 900; font-size: 1.8rem; text-align: center; margin-bottom: 20px; color: #fff; letter-spacing: 2px; }
+        .sidebar-nav { flex: 1; }
+        .sidebar a {
+            color: #888; text-decoration: none; padding: 12px; display: flex; align-items: center; gap: 10px;
+            font-size: 0.9rem; border-radius: 10px; cursor: pointer; transition: 0.3s;
+        }
+        .sidebar a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+
+        /* CONTEÚDO PRINCIPAL */
+        .main-content { margin-left: 240px; width: calc(100% - 240px); padding: 30px; display: flex; flex-direction: column; align-items: center; }
+        .top-gif { width: 100%; max-width: 450px; border-radius: 20px; margin-bottom: 25px; border: 2px solid var(--border-rgba); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        .view-content { display: none; width: 100%; text-align: center; animation: fadeIn 0.4s ease; }
+        .view-active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-box {
+            width: 100%; max-width: 650px; background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-rgba); padding: 30px; border-radius: 24px;
+            text-align: center; margin-bottom: 25px; backdrop-filter: blur(10px);
+        }
+
+        #bots-area {
+            display: grid; width: 100%; max-width: 1000px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px;
+        }
+        .bot-card { 
+            background: var(--card-bg); border-radius: 20px; padding: 25px;
+            border: 1px solid var(--border-rgba); transition: 0.3s; text-align: left;
+        }
+        .bot-card h3 { margin-top: 0; color: #00d2ff; font-weight: 900; }
+
+        /* BOTÕES */
+        .btn-grad { padding: 12px 30px; border-radius: 12px; border: none; color: #fff; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .btn-grad:hover { transform: scale(1.05); filter: brightness(1.2); }
+        .bg-free { background: var(--free-grad); }
+        .bg-pro { background: var(--pro-grad); color: #000; }
+        .bg-discord { background: var(--discord-color); font-size: 1.1rem; }
+
+        .title-gradient { font-size: 2.2rem; font-weight: 900; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .free-text { background-image: var(--free-grad); }
+        .pro-text { background-image: var(--pro-grad); }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 80px; padding: 10px 5px; }
+            .sidebar span, .sidebar-logo, .user-name { display: none; }
+            .user-profile { justify-content: center; }
+            .main-content { margin-left: 80px; width: calc(100% - 80px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="sidebar-logo" style="font-size: 3.5rem; margin-bottom: 5px;">STYLE BOTS</div>
+        <p style="color: #888; margin-bottom: 35px; font-weight: 400;">Autentique-se para acessar o painel premium.</p>
+        
+        <a href="https://discord.com/oauth2/authorize?client_id=1467281169618964754&response_type=code&redirect_uri=https%3A%2F%2Fseijincomp-web.github.io%2FStyle-Bots.html%2F&scope=identify+guilds" class="btn-grad bg-discord">
+            <i class="fa-brands fa-discord"></i> ENTRAR COM DISCORD
+        </a>
+    </div>
+
+    <aside class="sidebar">
+        <div class="user-profile">
+            <img src="https://i.pinimg.com/originals/91/92/79/91927958564a273010b4279b9d3e8e2c.gif" alt="Avatar" class="user-avatar" id="nav-avatar">
+            <span class="user-name" id="nav-username">Carregando...</span>
+        </div>
+
+        <div class="sidebar-logo">STYLE</div>
+        <div class="sidebar-nav">
+            <a onclick="showView('HOME')"><i class="fa-solid fa-house"></i> <span>Início</span></a>
+            <a onclick="showView('FREE')"><i class="fa-solid fa-robot" style="color:#00d2ff"></i> <span>Bots Free</span></a>
+            <a onclick="showView('PRO')"><i class="fa-solid fa-crown" style="color:var(--gold)"></i> <span>Bots Pro</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <div id="view-home" class="view-content view-active">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZueXo0eXpueGZueXo0eXpueGZueXo0eXpueGZueXo0eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKMGpxxca8caLpS/giphy.gif" class="top-gif">
+            
+            <div class="section-box">
+                <h1 class="title-gradient free-text">Style Bots Free</h1>
+                <p style="color:#888;">Explore nossa biblioteca de bots gratuitos e essenciais.</p>
+                <button class="btn-grad bg-free" onclick="showView('FREE')">ABRIR CATEGORIA</button>
+            </div>
+        </div>
+
+        <div id="view-free" class="view-content">
+            <h1 class="title-gradient free-text">Bots Gratuitos</h1>
+            <div id="bots-area"></div>
+        </div>
+
+        <div id="view-pro" class="view-content">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZueXo0eXpueGZueXo0eXpueGZueXo0eXpueGZueXo0eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0ExhcMymdL6TrZ84/giphy.gif" class="top-gif" style="border-color: var(--gold);">
+            <h1 class="title-gradient pro-text">Sistemas Elite</h1>
+            <p style="color:#aaa;">Automação de vendas, dashboard e muito mais.</p>
+            <br><button class="btn-grad bg-pro">ADQUIRIR ACESSO</button>
+        </div>
+
+    </main>
+
+    <script>
+        // Função para verificar se o usuário voltou do login
+        function checkAuth() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+
+            if (code) {
+                // Se houver um código na URL, escondemos o bloqueio
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('nav-username').innerText = "Usuário Style";
+                // Remove o código da URL para ficar limpo
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        const botsList = [
+            { nome: "Verificação", desc: "Segurança com captcha e botões.", link: "https://discord.com/oauth2/authorize?client_id=1474916622840889628&permissions=8&integration_type=0&scope=bot+applications.commands" },
+            { nome: "Tickets", desc: "Suporte via canais privados.", link: "https://discord.com/oauth2/authorize?client_id=1467281169618964754&permissions=8&integration_type=0&scope=bot+applications.commands" },
+            { nome: "Invite", desc: "Controle de convites e entrada.", link: "https://discord.com/oauth2/authorize?client_id=1475631278278574130&permissions=8&integration_type=0&scope=bot+applications.commands" }
+        ];
+
+        function showView(viewId) {
+            document.querySelectorAll('.view-content').forEach(v => v.classList.remove('view-active'));
+            document.getElementById('view-' + viewId.toLowerCase()).classList.add('view-active');
+        }
+
+        function renderBots() {
+            const area = document.getElementById('bots-area');
+            if(area) {
+                area.innerHTML = botsList.map(bot => `
+                    <div class="bot-card">
+                        <h3>${bot.nome}</h3>
+                        <p>${bot.desc}</p>
+                        <a href="${bot.link}" target="_blank" class="btn-grad bg-free">ADICIONAR</a>
+                    </div>
+                `).join('');
+            }
+        }
+
+        renderBots();
+        checkAuth(); // Verifica o login ao carregar a página
+    </script>
+</body>
+</html>
