@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Style Bots | Premium</title>
+    <title>Style Bots | Freemium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
@@ -37,14 +37,13 @@
             position: fixed; display: flex; flex-direction: column; padding: 20px; z-index: 100;
         }
 
-        /* FOTO DO USUÁRIO NO TOPO ESQUERDO */
         .user-profile {
             display: flex; align-items: center; gap: 12px; margin-bottom: 30px;
             padding: 10px; border-radius: 15px; background: rgba(255,255,255,0.03);
             border: 1px solid var(--border-rgba);
         }
         .user-avatar {
-            width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary);
+            width: 45px; height: 45px; border-radius: 50%; border: 2px solid #00d2ff;
             object-fit: cover; background: #222;
         }
         .user-name { font-size: 0.85rem; font-weight: 600; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -81,7 +80,6 @@
         }
         .bot-card h3 { margin-top: 0; color: #00d2ff; font-weight: 900; }
 
-        /* BOTÕES */
         .btn-grad { padding: 12px 30px; border-radius: 12px; border: none; color: #fff; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; }
         .btn-grad:hover { transform: scale(1.05); filter: brightness(1.2); }
         .bg-free { background: var(--free-grad); }
@@ -104,9 +102,9 @@
 
     <div id="login-overlay">
         <div class="sidebar-logo" style="font-size: 3.5rem; margin-bottom: 5px;">STYLE BOTS</div>
-        <p style="color: #888; margin-bottom: 35px; font-weight: 400;">Autentique-se para acessar o painel premium.</p>
+        <p style="color: #888; margin-bottom: 35px;">Autentique-se para acessar o painel Style.</p>
         
-        <a href="https://discord.com/oauth2/authorize?client_id=1467281169618964754&response_type=code&redirect_uri=https%3A%2F%2Fseijincomp-web.github.io%2FStyle-Bots.html%2F&scope=identify+guilds" class="btn-grad bg-discord">
+        <a href="https://discord.com/oauth2/authorize?client_id=1467281169618964754&response_type=code&redirect_uri=https%3A%2F%2Fseijincomp-web.github.io%2FStyle-Bots-Freemium%2F&scope=identify+guilds" class="btn-grad bg-discord">
             <i class="fa-brands fa-discord"></i> ENTRAR COM DISCORD
         </a>
     </div>
@@ -126,10 +124,8 @@
     </aside>
 
     <main class="main-content">
-        
         <div id="view-home" class="view-content view-active">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZueXo0eXpueGZueXo0eXpueGZueXo0eXpueGZueXo0eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKMGpxxca8caLpS/giphy.gif" class="top-gif">
-            
             <div class="section-box">
                 <h1 class="title-gradient free-text">Style Bots Free</h1>
                 <p style="color:#888;">Explore nossa biblioteca de bots gratuitos e essenciais.</p>
@@ -145,23 +141,19 @@
         <div id="view-pro" class="view-content">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZueXo0eXpueGZueXo0eXpueGZueXo0eXpueGZueXo0eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0ExhcMymdL6TrZ84/giphy.gif" class="top-gif" style="border-color: var(--gold);">
             <h1 class="title-gradient pro-text">Sistemas Elite</h1>
-            <p style="color:#aaa;">Automação de vendas, dashboard e muito mais.</p>
+            <p style="color:#aaa;">Automação de vendas e performance máxima.</p>
             <br><button class="btn-grad bg-pro">ADQUIRIR ACESSO</button>
         </div>
-
     </main>
 
     <script>
-        // Função para verificar se o usuário voltou do login
+        // Mantém as funções funcionando corretamente após o login
         function checkAuth() {
             const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-
-            if (code) {
-                // Se houver um código na URL, escondemos o bloqueio
+            if (urlParams.has('code')) {
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('nav-username').innerText = "Usuário Style";
-                // Remove o código da URL para ficar limpo
+                // Limpa a URL sem dar refresh na página (evita perder funções)
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
         }
@@ -174,7 +166,8 @@
 
         function showView(viewId) {
             document.querySelectorAll('.view-content').forEach(v => v.classList.remove('view-active'));
-            document.getElementById('view-' + viewId.toLowerCase()).classList.add('view-active');
+            const target = document.getElementById('view-' + viewId.toLowerCase());
+            if(target) target.classList.add('view-active');
         }
 
         function renderBots() {
@@ -184,6 +177,18 @@
                     <div class="bot-card">
                         <h3>${bot.nome}</h3>
                         <p>${bot.desc}</p>
+                        <a href="${bot.link}" target="_blank" class="btn-grad bg-free">ADICIONAR</a>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Inicialização única
+        renderBots();
+        checkAuth();
+    </script>
+</body>
+</html>bot.desc}</p>
                         <a href="${bot.link}" target="_blank" class="btn-grad bg-free">ADICIONAR</a>
                     </div>
                 `).join('');
